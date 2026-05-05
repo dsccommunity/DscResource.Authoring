@@ -1,0 +1,4 @@
+class DscAdaptedResourceManifestSchema
+{
+    [hashtable] $Embedded
+}
