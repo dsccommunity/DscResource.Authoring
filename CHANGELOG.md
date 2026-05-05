@@ -7,25 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- For new features.
-
-### Changed
-
-- For changes in existing functionality.
-
-### Deprecated
-
-- For soon-to-be removed features.
-
-### Removed
-
-- For now removed features.
-
-### Fixed
-
-- For any bug fix.
-
-### Security
-
-- In case of vulnerabilities.
-
+- Added `New-DscAdaptedResourceManifest` to generate adapted resource manifests from PowerShell class-based DSC resources.
+- Added `Import-DscAdaptedResourceManifest` to load an adapted resource manifest from a `.dsc.adaptedResource.json` file.
+- Added `Import-DscResourceManifest` to load a full DSC resource manifest list from a `.dsc.manifests.json` file.
+- Added `New-DscResourceManifest` to build a `DscResourceManifestList` object from adapted resource manifests.
+- Added `New-DscPropertyOverride` to create property override objects for use with `Update-DscAdaptedResourceManifest`.
+- Added `Update-DscAdaptedResourceManifest` to apply property overrides to the embedded JSON schema of an adapted resource manifest.
