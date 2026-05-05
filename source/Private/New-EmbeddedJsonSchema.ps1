@@ -21,6 +21,18 @@
     .PARAMETER ClassHelp
         Optional hashtable produced by Get-ClassCommentBasedHelp containing
         per-parameter descriptions to use for property descriptions.
+
+    .EXAMPLE
+        $schema = New-EmbeddedJsonSchema -ResourceName 'MyModule/MyResource' -Properties $properties
+
+        Builds an embedded JSON Schema document for the given resource and
+        property list using default descriptions.
+
+    .EXAMPLE
+        $schema = New-EmbeddedJsonSchema -ResourceName 'MyModule/MyResource' `
+            -Properties $properties -Description 'Manages my resource.' -ClassHelp $helpMap
+
+        Builds the schema using descriptions sourced from the class comment-based help.
 #>
 function New-EmbeddedJsonSchema
 {
@@ -68,6 +80,11 @@ function New-EmbeddedJsonSchema
         }
 
         $schemaProp['title'] = $prop.Name
+
+        if ($prop.IsNotConfigurable)
+        {
+            $schemaProp['readOnly'] = $true
+        }
 
         if ($ClassHelp -and $ClassHelp.Parameters.ContainsKey($prop.Name))
         {

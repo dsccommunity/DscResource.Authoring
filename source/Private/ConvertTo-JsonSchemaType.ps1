@@ -9,6 +9,16 @@
 
     .PARAMETER TypeName
         The PowerShell type name to convert.
+
+    .EXAMPLE
+        ConvertTo-JsonSchemaType -TypeName 'bool'
+
+        Returns @{ type = 'boolean' }.
+
+    .EXAMPLE
+        ConvertTo-JsonSchemaType -TypeName 'string[]'
+
+        Returns @{ type = 'array'; items = @{ type = 'string' } }.
 #>
 function ConvertTo-JsonSchemaType
 {

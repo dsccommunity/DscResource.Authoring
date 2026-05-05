@@ -11,6 +11,13 @@
 
     .PARAMETER Path
         The full path to a .ps1 or .psm1 file to inspect.
+
+    .EXAMPLE
+        $helpMap = Get-ClassCommentBasedHelp -Path './MyModule/MyModule.psm1'
+
+        Returns a hashtable keyed by class name, where each value contains
+        the parsed Synopsis, Description and Parameters from the block comment
+        preceding that class declaration.
 #>
 function Get-ClassCommentBasedHelp
 {

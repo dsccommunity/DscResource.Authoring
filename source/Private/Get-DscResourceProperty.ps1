@@ -13,6 +13,12 @@
 
     .PARAMETER TypeDefinitionAst
         The type definition AST of the class to collect properties from.
+
+    .EXAMPLE
+        $properties = Get-DscResourceProperty -AllTypeDefinitions $allTypes -TypeDefinitionAst $typeAst
+
+        Returns a list of hashtables describing every [DscProperty()] decorated
+        property on the class and any base classes defined in the same file.
 #>
 function Get-DscResourceProperty
 {

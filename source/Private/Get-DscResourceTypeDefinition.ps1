@@ -9,6 +9,12 @@
 
     .PARAMETER Path
         The full path to a .ps1 or .psm1 file to parse.
+
+    .EXAMPLE
+        $dscTypes = Get-DscResourceTypeDefinition -Path './MyModule/MyModule.psm1'
+
+        Returns a list of hashtables, each containing the TypeDefinitionAst and
+        AllTypeDefinitions for a class decorated with [DscResource()].
 #>
 function Get-DscResourceTypeDefinition
 {

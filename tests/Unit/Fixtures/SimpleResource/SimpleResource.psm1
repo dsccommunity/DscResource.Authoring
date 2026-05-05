@@ -12,6 +12,9 @@ class SimpleResource {
     [DscProperty()]
     [bool] $Enabled
 
+    [DscProperty(NotConfigurable)]
+    [string] $ComputedStatus
+
     [SimpleResource] Get() {
         return $this
     }

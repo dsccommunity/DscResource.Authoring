@@ -10,6 +10,12 @@
 
     .PARAMETER MemberAst
         The collection of member AST nodes from the class type definition.
+
+    .EXAMPLE
+        $capabilities = Get-DscResourceCapability -MemberAst $typeDefinitionAst.Members
+
+        Returns strings such as 'get', 'set' and 'test' for each DSCv3 method
+        implemented on the class.
 #>
 function Get-DscResourceCapability
 {

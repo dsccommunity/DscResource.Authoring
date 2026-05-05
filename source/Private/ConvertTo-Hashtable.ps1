@@ -10,7 +10,14 @@
         ConvertFrom-Json before consuming it as hashtables.
 
     .PARAMETER InputObject
-        The object to convert.
+        The object or structure to recursively convert to a hashtable.
+
+    .EXAMPLE
+        $parsed = ConvertFrom-Json -InputObject $jsonContent
+        $hashtable = ConvertTo-Hashtable -InputObject $parsed
+
+        Converts the PSCustomObject graph produced by ConvertFrom-Json into
+        nested ordered hashtables.
 #>
 function ConvertTo-Hashtable
 {

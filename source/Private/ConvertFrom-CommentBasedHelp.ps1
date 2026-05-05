@@ -9,7 +9,13 @@
 
     .PARAMETER CommentText
         The raw text of a PowerShell block comment, including the surrounding
-        `<#` and `#>` delimiters.
+        known SYNOPSIS delimiters.
+
+    .EXAMPLE
+        ConvertFrom-CommentBasedHelp -CommentText $token.Text
+
+        Parses the block comment token text and returns a hashtable with
+        Synopsis, Description and Parameters keys.
 #>
 function ConvertFrom-CommentBasedHelp
 {

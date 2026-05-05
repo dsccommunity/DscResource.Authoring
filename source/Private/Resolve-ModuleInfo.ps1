@@ -12,6 +12,17 @@
 
     .PARAMETER Path
         The path to a .ps1, .psm1 or .psd1 file.
+
+    .EXAMPLE
+        $info = Resolve-ModuleInfo -Path './MyModule/MyModule.psd1'
+
+        Returns a hashtable with ModuleName, Version, Author, Description,
+        ScriptPath, Psd1Path and Directory populated from the module manifest.
+
+    .EXAMPLE
+        $info = Resolve-ModuleInfo -Path './MyResource.psm1'
+
+        Returns a hashtable with defaults when no companion .psd1 exists.
 #>
 function Resolve-ModuleInfo
 {

@@ -18,7 +18,13 @@
 
     .PARAMETER Properties
         The list to which property hashtables are added. Each hashtable contains
-        the property Name, TypeName, IsKey, IsMandatory and EnumValues.
+        the property Name, TypeName, IsKey, IsMandatory, IsNotConfigurable and EnumValues.
+
+    .EXAMPLE
+        $properties = [System.Collections.Generic.List[hashtable]]::new()
+        Add-AstProperty -AllTypeDefinitions $allTypes -TypeAst $typeAst -Properties $properties
+
+        Collects all [DscProperty()] decorated properties from $typeAst into $properties.
 #>
 function Add-AstProperty
 {
@@ -59,6 +65,7 @@ function Add-AstProperty
         $isDscProperty = $false
         $isKey = $false
         $isMandatory = $false
+        $isNotConfigurable = $false
         foreach ($attr in $propertyAst.Attributes)
         {
             if ($attr.TypeName.Name -eq 'DscProperty')
@@ -70,6 +77,7 @@ function Add-AstProperty
                     {
                         'Key' { $isKey = $true }
                         'Mandatory' { $isMandatory = $true }
+                        'NotConfigurable' { $isNotConfigurable = $true }
                     }
                 }
             }
@@ -100,11 +108,12 @@ function Add-AstProperty
         }
 
         $Properties.Add(@{
-                Name        = $propertyAst.Name
-                TypeName    = $typeName
-                IsKey       = $isKey
-                IsMandatory = $isMandatory -or $isKey
-                EnumValues  = $enumValues
+                Name              = $propertyAst.Name
+                TypeName          = $typeName
+                IsKey             = $isKey
+                IsMandatory       = $isMandatory -or $isKey
+                IsNotConfigurable = $isNotConfigurable
+                EnumValues        = $enumValues
             })
     }
 }

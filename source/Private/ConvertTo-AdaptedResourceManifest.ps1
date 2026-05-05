@@ -10,6 +10,12 @@
 
     .PARAMETER Hashtable
         The hashtable representation of an adapted resource manifest document.
+
+    .EXAMPLE
+        $manifest = ConvertTo-AdaptedResourceManifest -Hashtable $hashtable
+
+        Hydrates a hashtable parsed from a .dsc.adaptedResource.json file into
+        a DscAdaptedResourceManifest object.
 #>
 function ConvertTo-AdaptedResourceManifest
 {
