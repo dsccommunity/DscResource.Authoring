@@ -15,7 +15,7 @@ RootModule = 'DscResource.Authoring.psm1'
 ModuleVersion = '0.0.1'
 
 # Supported PSEditions
-CompatiblePSEditions = @('Core', 'Desktop')
+CompatiblePSEditions = @()
 
 # ID used to uniquely identify this module
 GUID = '20a779d9-7db9-4d37-9363-e2a2ecf7853c'
