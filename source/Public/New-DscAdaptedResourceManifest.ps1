@@ -41,7 +41,7 @@
 #>
 function New-DscAdaptedResourceManifest
 {
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess = $true)]
     [OutputType([DscAdaptedResourceManifest])]
     param
     (

@@ -15,7 +15,7 @@ RootModule = 'DscResource.Authoring.psm1'
 ModuleVersion = '0.0.1'
 
 # Supported PSEditions
-# CompatiblePSEditions = @()
+CompatiblePSEditions = @('Core', 'Desktop')
 
 # ID used to uniquely identify this module
 GUID = '20a779d9-7db9-4d37-9363-e2a2ecf7853c'
@@ -30,7 +30,7 @@ CompanyName = 'dsccommunity'
 Copyright = '(c) dsccommunity. All rights reserved.'
 
 # Description of the functionality provided by this module
-Description = 'DSC resources authoring module aimed for v3'
+Description = 'DSC resources authoring module aimed for Microsoft DSC and PowerShell DSC community.'
 
 # Minimum version of the PowerShell engine required by this module
 PowerShellVersion = '5.0'

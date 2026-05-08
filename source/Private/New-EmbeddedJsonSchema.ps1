@@ -36,7 +36,7 @@
 #>
 function New-EmbeddedJsonSchema
 {
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess = $true)]
     [OutputType([System.Collections.Specialized.OrderedDictionary])]
     param
     (

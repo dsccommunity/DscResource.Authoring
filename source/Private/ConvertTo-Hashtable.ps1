@@ -22,7 +22,9 @@
 function ConvertTo-Hashtable
 {
     [CmdletBinding()]
-    [OutputType([hashtable])]
+    [OutputType([System.Collections.Specialized.OrderedDictionary])]
+    [OutputType([System.Object[]])]
+    [OutputType([System.Object])]
     param
     (
         [Parameter(Mandatory = $true)]

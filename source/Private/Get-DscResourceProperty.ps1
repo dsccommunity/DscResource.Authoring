@@ -24,6 +24,7 @@ function Get-DscResourceProperty
 {
     [CmdletBinding()]
     [OutputType([System.Collections.Generic.List[hashtable]])]
+    [OutputType([System.Object[]])]
     param
     (
         [Parameter(Mandatory = $true)]

@@ -56,7 +56,7 @@
 #>
 function New-DscPropertyOverride
 {
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess = $true)]
     [OutputType([DscPropertyOverride])]
     param
     (
