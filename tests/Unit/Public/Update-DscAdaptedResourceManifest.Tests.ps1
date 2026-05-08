@@ -6,7 +6,7 @@ using module DscResource.Authoring
 Describe 'Update-DscAdaptedResourceManifest' {
 
     BeforeAll {
-        $fixturesPath = Join-Path $PSScriptRoot '..' 'Fixtures'
+        $fixturesPath = Join-Path (Join-Path $PSScriptRoot '..') 'Fixtures'
     }
 
     Context 'Override property description' {

@@ -6,7 +6,7 @@ Describe 'New-DscAdaptedResourceManifest' {
     BeforeAll {
         Import-Module -Name 'DscResource.Authoring' -Force
 
-        $fixturesPath = Join-Path $PSScriptRoot '..' 'Fixtures'
+        $fixturesPath = Join-Path (Join-Path $PSScriptRoot '..') 'Fixtures'
     }
 
     Context 'Simple module with a single DSC resource' {

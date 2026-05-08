@@ -3,7 +3,7 @@ BeforeAll {
 
     Import-Module -Name $script:dscModuleName -Force
 
-    $fixturesPath = Join-Path $PSScriptRoot '..' 'Fixtures'
+    $fixturesPath = Join-Path (Join-Path $PSScriptRoot '..') 'Fixtures'
     $script:simplePsm1 = Join-Path $fixturesPath 'SimpleResource' 'SimpleResource.psm1'
     $script:multiPsm1 = Join-Path $fixturesPath 'MultiResource' 'MultiResource.psm1'
     $script:noDscPsm1 = Join-Path $fixturesPath 'NoDscResource.psm1'
@@ -32,7 +32,7 @@ Describe 'Add-AstProperty' {
 
         It 'Collects all [DscProperty()] decorated properties from SimpleResource' {
             InModuleScope 'DscResource.Authoring' {
-                $fixturesPath = Join-Path $PSScriptRoot '..' 'Fixtures'
+                $fixturesPath = Join-Path (Join-Path $PSScriptRoot '..') 'Fixtures'
                 $path = Join-Path $fixturesPath 'SimpleResource' 'SimpleResource.psm1'
                 [System.Management.Automation.Language.Token[]] $tokens = $null
                 [System.Management.Automation.Language.ParseError[]] $errors = $null
@@ -49,7 +49,7 @@ Describe 'Add-AstProperty' {
 
         It 'Marks the Key property correctly' {
             InModuleScope 'DscResource.Authoring' {
-                $fixturesPath = Join-Path $PSScriptRoot '..' 'Fixtures'
+                $fixturesPath = Join-Path (Join-Path $PSScriptRoot '..') 'Fixtures'
                 $path = Join-Path $fixturesPath 'SimpleResource' 'SimpleResource.psm1'
                 [System.Management.Automation.Language.Token[]] $tokens = $null
                 [System.Management.Automation.Language.ParseError[]] $errors = $null
@@ -68,7 +68,7 @@ Describe 'Add-AstProperty' {
 
         It 'Marks the Mandatory property correctly' {
             InModuleScope 'DscResource.Authoring' {
-                $fixturesPath = Join-Path $PSScriptRoot '..' 'Fixtures'
+                $fixturesPath = Join-Path (Join-Path $PSScriptRoot '..') 'Fixtures'
                 $path = Join-Path $fixturesPath 'SimpleResource' 'SimpleResource.psm1'
                 [System.Management.Automation.Language.Token[]] $tokens = $null
                 [System.Management.Automation.Language.ParseError[]] $errors = $null
@@ -87,7 +87,7 @@ Describe 'Add-AstProperty' {
 
         It 'Resolves enum values for enum-typed properties' {
             InModuleScope 'DscResource.Authoring' {
-                $fixturesPath = Join-Path $PSScriptRoot '..' 'Fixtures'
+                $fixturesPath = Join-Path (Join-Path $PSScriptRoot '..') 'Fixtures'
                 $path = Join-Path $fixturesPath 'MultiResource' 'MultiResource.psm1'
                 [System.Management.Automation.Language.Token[]] $tokens = $null
                 [System.Management.Automation.Language.ParseError[]] $errors = $null
@@ -106,7 +106,7 @@ Describe 'Add-AstProperty' {
 
         It 'Collects inherited base class properties' {
             InModuleScope 'DscResource.Authoring' {
-                $fixturesPath = Join-Path $PSScriptRoot '..' 'Fixtures'
+                $fixturesPath = Join-Path (Join-Path $PSScriptRoot '..') 'Fixtures'
                 $path = Join-Path $fixturesPath 'MultiResource' 'MultiResource.psm1'
                 [System.Management.Automation.Language.Token[]] $tokens = $null
                 [System.Management.Automation.Language.ParseError[]] $errors = $null

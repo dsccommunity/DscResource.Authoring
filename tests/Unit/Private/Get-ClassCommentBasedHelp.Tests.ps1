@@ -6,7 +6,7 @@ Describe 'GetClassCommentBasedHelp integration' {
     BeforeAll {
         Import-Module -Name 'DscResource.Authoring' -Force
 
-        $fixturesPath = Join-Path $PSScriptRoot '..' 'Fixtures'
+        $fixturesPath = Join-Path (Join-Path $PSScriptRoot '..') 'Fixtures'
     }
 
     Context 'Single class with full comment-based help' {

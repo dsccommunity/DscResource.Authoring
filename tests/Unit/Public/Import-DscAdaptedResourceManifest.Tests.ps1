@@ -6,7 +6,7 @@ Describe 'Import-DscAdaptedResourceManifest' {
     BeforeAll {
         Import-Module -Name 'DscResource.Authoring' -Force
 
-        $fixturesPath = Join-Path $PSScriptRoot '..' 'Fixtures'
+        $fixturesPath = Join-Path (Join-Path $PSScriptRoot '..') 'Fixtures'
     }
 
     Context 'Importing a full adapted resource manifest' {

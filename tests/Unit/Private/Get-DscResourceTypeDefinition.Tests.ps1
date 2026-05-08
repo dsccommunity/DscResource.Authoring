@@ -14,7 +14,7 @@ Describe 'Get-DscResourceTypeDefinition' {
 
         BeforeAll {
             InModuleScope 'DscResource.Authoring' {
-                $fixturesPath = Join-Path $PSScriptRoot '..' 'Fixtures'
+                $fixturesPath = Join-Path (Join-Path $PSScriptRoot '..') 'Fixtures'
                 $path = Join-Path $fixturesPath 'SimpleResource' 'SimpleResource.psm1'
                 $script:result = @(Get-DscResourceTypeDefinition -Path $path)
             }
@@ -50,7 +50,7 @@ Describe 'Get-DscResourceTypeDefinition' {
 
         It 'Returns one entry per [DscResource()] class' {
             InModuleScope 'DscResource.Authoring' {
-                $fixturesPath = Join-Path $PSScriptRoot '..' 'Fixtures'
+                $fixturesPath = Join-Path (Join-Path $PSScriptRoot '..') 'Fixtures'
                 $path = Join-Path $fixturesPath 'MultiResource' 'MultiResource.psm1'
                 $result = @(Get-DscResourceTypeDefinition -Path $path)
                 $result.Count | Should -BeGreaterOrEqual 2
@@ -62,7 +62,7 @@ Describe 'Get-DscResourceTypeDefinition' {
 
         It 'Returns an empty list' {
             InModuleScope 'DscResource.Authoring' {
-                $fixturesPath = Join-Path $PSScriptRoot '..' 'Fixtures'
+                $fixturesPath = Join-Path (Join-Path $PSScriptRoot '..') 'Fixtures'
                 $path = Join-Path $fixturesPath 'NoDscResource.psm1'
                 $result = @(Get-DscResourceTypeDefinition -Path $path)
                 $result.Count | Should -Be 0
@@ -74,7 +74,7 @@ Describe 'Get-DscResourceTypeDefinition' {
 
         It 'Returns one entry for the DSC class in the standalone file' {
             InModuleScope 'DscResource.Authoring' {
-                $fixturesPath = Join-Path $PSScriptRoot '..' 'Fixtures'
+                $fixturesPath = Join-Path (Join-Path $PSScriptRoot '..') 'Fixtures'
                 $path = Join-Path $fixturesPath 'StandaloneResource.ps1'
                 $result = @(Get-DscResourceTypeDefinition -Path $path)
                 $result.Count | Should -Be 1
