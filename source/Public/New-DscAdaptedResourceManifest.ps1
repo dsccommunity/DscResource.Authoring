@@ -69,7 +69,7 @@ function New-DscAdaptedResourceManifest
             })]
         [string]
         $Path,
-        
+
         # Semantic version string for PS7: SemanticVersion Class
         [Parameter()]
         [ValidateScript({
