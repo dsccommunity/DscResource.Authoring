@@ -41,7 +41,7 @@
 #>
 function New-DscAdaptedResourceManifest
 {
-    [CmdletBinding(SupportsShouldProcess = $true)]
+    [CmdletBinding(SupportsShouldProcess = $true, ConfirmImpact = 'Low')]
     [OutputType([DscAdaptedResourceManifest])]
     param
     (
@@ -145,7 +145,10 @@ function New-DscAdaptedResourceManifest
                 Embedded = $embeddedSchema
             }
 
-            Write-Output $manifest
+            if ($PSCmdlet.ShouldProcess($resourceType, 'Create adapted resource manifest'))
+            {
+                Write-Output $manifest
+            }
         }
     }
 }

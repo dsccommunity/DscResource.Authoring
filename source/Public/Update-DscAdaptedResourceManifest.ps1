@@ -89,7 +89,7 @@
 #>
 function Update-DscAdaptedResourceManifest
 {
-    [CmdletBinding(SupportsShouldProcess = $true)]
+    [CmdletBinding(SupportsShouldProcess = $true, ConfirmImpact = 'Low')]
     [OutputType([DscAdaptedResourceManifest])]
     param
     (
@@ -191,6 +191,9 @@ function Update-DscAdaptedResourceManifest
             $schema['required'] = @($requiredList)
         }
 
-        Write-Output $InputObject
+        if ($PSCmdlet.ShouldProcess($InputObject.Type, 'Update adapted resource manifest'))
+        {
+            Write-Output $InputObject
+        }
     }
 }

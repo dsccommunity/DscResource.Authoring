@@ -53,7 +53,7 @@
 #>
 function New-DscResourceManifest
 {
-    [CmdletBinding(SupportsShouldProcess = $true)]
+    [CmdletBinding(SupportsShouldProcess = $true, ConfirmImpact = 'Low')]
     [OutputType([DscResourceManifestList])]
     param
     (
@@ -92,6 +92,9 @@ function New-DscResourceManifest
 
     end
     {
-        Write-Output $manifestList
+        if ($PSCmdlet.ShouldProcess('DscResourceManifest', 'Create'))
+        {
+            Write-Output $manifestList
+        }
     }
 }

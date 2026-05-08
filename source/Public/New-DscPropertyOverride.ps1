@@ -56,7 +56,7 @@
 #>
 function New-DscPropertyOverride
 {
-    [CmdletBinding(SupportsShouldProcess = $true)]
+    [CmdletBinding(SupportsShouldProcess = $true, ConfirmImpact = 'Low')]
     [OutputType([DscPropertyOverride])]
     param
     (
@@ -113,5 +113,8 @@ function New-DscPropertyOverride
         $override.Required = $Required
     }
 
-    Write-Output $override
+    if ($PSCmdlet.ShouldProcess($Name, 'Overwrite property in adapted resource manifest'))
+    {
+        Write-Output $override
+    }
 }

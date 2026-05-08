@@ -36,7 +36,7 @@
 #>
 function New-EmbeddedJsonSchema
 {
-    [CmdletBinding(SupportsShouldProcess = $true)]
+    [CmdletBinding(SupportsShouldProcess = $true, ConfirmImpact = 'Low')]
     [OutputType([System.Collections.Specialized.OrderedDictionary])]
     param
     (
@@ -117,5 +117,8 @@ function New-EmbeddedJsonSchema
         $schema['description'] = $Description
     }
 
-    return $schema
+    if ($PSCmdlet.ShouldProcess($ResourceName, 'Create embedded JSON schema'))
+    {
+        return $schema
+    }
 }
