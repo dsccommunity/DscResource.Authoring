@@ -12,7 +12,7 @@ Describe 'Update-DscAdaptedResourceManifest' {
     Context 'Override property description' {
 
         BeforeAll {
-            $psd1 = Join-Path $fixturesPath 'SimpleResource' 'SimpleResource.psd1'
+            $psd1 = Join-Path (Join-Path $fixturesPath 'SimpleResource') 'SimpleResource.psd1'
             $manifest = New-DscAdaptedResourceManifest -Path $psd1
             $override = [DscPropertyOverride]@{
                 Name        = 'Name'
@@ -44,7 +44,7 @@ Describe 'Update-DscAdaptedResourceManifest' {
     Context 'Override property title' {
 
         BeforeAll {
-            $psd1 = Join-Path $fixturesPath 'SimpleResource' 'SimpleResource.psd1'
+            $psd1 = Join-Path (Join-Path $fixturesPath 'SimpleResource') 'SimpleResource.psd1'
             $manifest = New-DscAdaptedResourceManifest -Path $psd1
             $override = [DscPropertyOverride]@{
                 Name  = 'Name'
@@ -62,7 +62,7 @@ Describe 'Update-DscAdaptedResourceManifest' {
     Context 'Add JSON schema keywords' {
 
         BeforeAll {
-            $psd1 = Join-Path $fixturesPath 'MultiResource' 'MultiResource.psd1'
+            $psd1 = Join-Path (Join-Path $fixturesPath 'MultiResource') 'MultiResource.psd1'
             $manifests = @(New-DscAdaptedResourceManifest -Path $psd1)
             $resourceA = $manifests | Where-Object { $_.Type -eq 'MultiResource/ResourceA' }
             $override = [DscPropertyOverride]@{
@@ -96,7 +96,7 @@ Describe 'Update-DscAdaptedResourceManifest' {
     Context 'Replace enum with anyOf using RemoveKeys' {
 
         BeforeAll {
-            $psd1 = Join-Path $fixturesPath 'MultiResource' 'MultiResource.psd1'
+            $psd1 = Join-Path (Join-Path $fixturesPath 'MultiResource') 'MultiResource.psd1'
             $manifests = @(New-DscAdaptedResourceManifest -Path $psd1)
             $resourceA = $manifests | Where-Object { $_.Type -eq 'MultiResource/ResourceA' }
             $override = [DscPropertyOverride]@{
@@ -152,7 +152,7 @@ Describe 'Update-DscAdaptedResourceManifest' {
     Context 'Override required status' {
 
         It 'Adds a property to the required list' {
-            $psd1 = Join-Path $fixturesPath 'SimpleResource' 'SimpleResource.psd1'
+            $psd1 = Join-Path (Join-Path $fixturesPath 'SimpleResource') 'SimpleResource.psd1'
             $manifest = New-DscAdaptedResourceManifest -Path $psd1
             $override = [DscPropertyOverride]@{
                 Name     = 'Enabled'
@@ -163,7 +163,7 @@ Describe 'Update-DscAdaptedResourceManifest' {
         }
 
         It 'Removes a property from the required list' {
-            $psd1 = Join-Path $fixturesPath 'SimpleResource' 'SimpleResource.psd1'
+            $psd1 = Join-Path (Join-Path $fixturesPath 'SimpleResource') 'SimpleResource.psd1'
             $manifest = New-DscAdaptedResourceManifest -Path $psd1
             $override = [DscPropertyOverride]@{
                 Name     = 'Name'
@@ -174,7 +174,7 @@ Describe 'Update-DscAdaptedResourceManifest' {
         }
 
         It 'Does not duplicate a property already in the required list' {
-            $psd1 = Join-Path $fixturesPath 'SimpleResource' 'SimpleResource.psd1'
+            $psd1 = Join-Path (Join-Path $fixturesPath 'SimpleResource') 'SimpleResource.psd1'
             $manifest = New-DscAdaptedResourceManifest -Path $psd1
             $override = [DscPropertyOverride]@{
                 Name     = 'Name'
@@ -189,7 +189,7 @@ Describe 'Update-DscAdaptedResourceManifest' {
     Context 'Override resource-level description' {
 
         BeforeAll {
-            $psd1 = Join-Path $fixturesPath 'SimpleResource' 'SimpleResource.psd1'
+            $psd1 = Join-Path (Join-Path $fixturesPath 'SimpleResource') 'SimpleResource.psd1'
             $manifest = New-DscAdaptedResourceManifest -Path $psd1
             $result = $manifest | Update-DscAdaptedResourceManifest -Description 'A custom resource description.'
         }
@@ -207,7 +207,7 @@ Describe 'Update-DscAdaptedResourceManifest' {
     Context 'Multiple property overrides' {
 
         BeforeAll {
-            $psd1 = Join-Path $fixturesPath 'SimpleResource' 'SimpleResource.psd1'
+            $psd1 = Join-Path (Join-Path $fixturesPath 'SimpleResource') 'SimpleResource.psd1'
             $manifest = New-DscAdaptedResourceManifest -Path $psd1
             $overrides = @(
                 [DscPropertyOverride]@{
@@ -250,7 +250,7 @@ Describe 'Update-DscAdaptedResourceManifest' {
     Context 'Warning for non-existent property' {
 
         It 'Emits a warning and skips the override' {
-            $psd1 = Join-Path $fixturesPath 'SimpleResource' 'SimpleResource.psd1'
+            $psd1 = Join-Path (Join-Path $fixturesPath 'SimpleResource') 'SimpleResource.psd1'
             $manifest = New-DscAdaptedResourceManifest -Path $psd1
             $override = [DscPropertyOverride]@{
                 Name        = 'DoesNotExist'
@@ -266,7 +266,7 @@ Describe 'Update-DscAdaptedResourceManifest' {
     Context 'No-op when no overrides provided' {
 
         BeforeAll {
-            $psd1 = Join-Path $fixturesPath 'SimpleResource' 'SimpleResource.psd1'
+            $psd1 = Join-Path (Join-Path $fixturesPath 'SimpleResource') 'SimpleResource.psd1'
             $manifest = New-DscAdaptedResourceManifest -Path $psd1
             $originalJson = $manifest.ToJson()
             $result = $manifest | Update-DscAdaptedResourceManifest
@@ -284,7 +284,7 @@ Describe 'Update-DscAdaptedResourceManifest' {
     Context 'Pipeline support' {
 
         It 'Processes multiple manifests from pipeline' {
-            $psd1 = Join-Path $fixturesPath 'MultiResource' 'MultiResource.psd1'
+            $psd1 = Join-Path (Join-Path $fixturesPath 'MultiResource') 'MultiResource.psd1'
             $override = [DscPropertyOverride]@{
                 Name        = 'Name'
                 Description = 'Overridden name description.'
@@ -301,7 +301,7 @@ Describe 'Update-DscAdaptedResourceManifest' {
     Context 'Serialization after update' {
 
         BeforeAll {
-            $psd1 = Join-Path $fixturesPath 'SimpleResource' 'SimpleResource.psd1'
+            $psd1 = Join-Path (Join-Path $fixturesPath 'SimpleResource') 'SimpleResource.psd1'
             $manifest = New-DscAdaptedResourceManifest -Path $psd1
             $override = [DscPropertyOverride]@{
                 Name        = 'Name'

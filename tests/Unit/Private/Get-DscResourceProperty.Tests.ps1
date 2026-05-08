@@ -15,7 +15,7 @@ Describe 'Get-DscResourceProperty' {
         BeforeAll {
             InModuleScope 'DscResource.Authoring' {
                 $fixturesPath = Join-Path (Join-Path $PSScriptRoot '..') 'Fixtures'
-                $path = Join-Path $fixturesPath 'SimpleResource' 'SimpleResource.psm1'
+                $path = Join-Path (Join-Path $fixturesPath 'SimpleResource') 'SimpleResource.psm1'
                 [System.Management.Automation.Language.Token[]] $tokens = $null
                 [System.Management.Automation.Language.ParseError[]] $errors = $null
                 $ast = [System.Management.Automation.Language.Parser]::ParseFile($path, [ref]$tokens, [ref]$errors)
@@ -72,7 +72,7 @@ Describe 'Get-DscResourceProperty' {
         It 'Returns properties from both base and derived class' {
             InModuleScope 'DscResource.Authoring' {
                 $fixturesPath = Join-Path (Join-Path $PSScriptRoot '..') 'Fixtures'
-                $path = Join-Path $fixturesPath 'MultiResource' 'MultiResource.psm1'
+                $path = Join-Path (Join-Path $fixturesPath 'MultiResource') 'MultiResource.psm1'
                 [System.Management.Automation.Language.Token[]] $tokens = $null
                 [System.Management.Automation.Language.ParseError[]] $errors = $null
                 $ast = [System.Management.Automation.Language.Parser]::ParseFile($path, [ref]$tokens, [ref]$errors)

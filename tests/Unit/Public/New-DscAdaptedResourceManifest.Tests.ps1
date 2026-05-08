@@ -12,7 +12,7 @@ Describe 'New-DscAdaptedResourceManifest' {
     Context 'Simple module with a single DSC resource' {
 
         BeforeAll {
-            $psd1 = Join-Path $fixturesPath 'SimpleResource' 'SimpleResource.psd1'
+            $psd1 = Join-Path (Join-Path $fixturesPath 'SimpleResource') 'SimpleResource.psd1'
             $result = New-DscAdaptedResourceManifest -Path $psd1
         }
 
@@ -102,7 +102,7 @@ Describe 'New-DscAdaptedResourceManifest' {
     Context 'Module with multiple DSC resources, inheritance, and enums' {
 
         BeforeAll {
-            $psd1 = Join-Path $fixturesPath 'MultiResource' 'MultiResource.psd1'
+            $psd1 = Join-Path (Join-Path $fixturesPath 'MultiResource') 'MultiResource.psd1'
             $results = @(New-DscAdaptedResourceManifest -Path $psd1)
         }
 
@@ -241,7 +241,7 @@ Describe 'New-DscAdaptedResourceManifest' {
     Context 'ToJson serialization' {
 
         BeforeAll {
-            $psd1 = Join-Path $fixturesPath 'SimpleResource' 'SimpleResource.psd1'
+            $psd1 = Join-Path (Join-Path $fixturesPath 'SimpleResource') 'SimpleResource.psd1'
             $manifest = New-DscAdaptedResourceManifest -Path $psd1
             $json = $manifest.ToJson()
             $parsed = $json | ConvertFrom-Json
@@ -280,7 +280,7 @@ Describe 'New-DscAdaptedResourceManifest' {
     Context 'Pipeline input' {
 
         It 'Accepts Path from pipeline by value' {
-            $psd1 = Join-Path $fixturesPath 'SimpleResource' 'SimpleResource.psd1'
+            $psd1 = Join-Path (Join-Path $fixturesPath 'SimpleResource') 'SimpleResource.psd1'
             $result = $psd1 | New-DscAdaptedResourceManifest
             $result | Should -HaveCount 1
             $result.Type | Should -BeExactly 'SimpleResource/SimpleResource'
@@ -288,8 +288,8 @@ Describe 'New-DscAdaptedResourceManifest' {
 
         It 'Accepts multiple paths from pipeline' {
             $paths = @(
-                (Join-Path $fixturesPath 'SimpleResource' 'SimpleResource.psd1')
-                (Join-Path $fixturesPath 'MultiResource' 'MultiResource.psd1')
+                (Join-Path (Join-Path $fixturesPath 'SimpleResource') 'SimpleResource.psd1')
+                (Join-Path (Join-Path $fixturesPath 'MultiResource') 'MultiResource.psd1')
             )
             $results = $paths | New-DscAdaptedResourceManifest
             $results | Should -HaveCount 3  # 1 from Simple + 2 from Multi
@@ -304,7 +304,7 @@ Describe 'New-DscAdaptedResourceManifest' {
     Context 'Input via .psm1 path resolves co-located .psd1' {
 
         It 'Uses psd1 metadata when psm1 is provided and psd1 exists' {
-            $psm1Path = Join-Path $fixturesPath 'SimpleResource' 'SimpleResource.psm1'
+            $psm1Path = Join-Path (Join-Path $fixturesPath 'SimpleResource') 'SimpleResource.psm1'
             $result = New-DscAdaptedResourceManifest -Path $psm1Path
             $result.Version | Should -BeExactly '1.0.0'
             $result.Author | Should -BeExactly 'Microsoft'
@@ -333,7 +333,7 @@ Describe 'New-DscAdaptedResourceManifest' {
     Context 'Schema additionalProperties' {
 
         It 'Sets additionalProperties to false' {
-            $psd1 = Join-Path $fixturesPath 'SimpleResource' 'SimpleResource.psd1'
+            $psd1 = Join-Path (Join-Path $fixturesPath 'SimpleResource') 'SimpleResource.psd1'
             $result = New-DscAdaptedResourceManifest -Path $psd1
             $result.ManifestSchema.Embedded['additionalProperties'] | Should -BeFalse
         }

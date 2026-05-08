@@ -4,8 +4,8 @@ BeforeAll {
     Import-Module -Name $script:dscModuleName -Force
 
     $fixturesPath = Join-Path (Join-Path $PSScriptRoot '..') 'Fixtures'
-    $script:simplePsm1 = Join-Path $fixturesPath 'SimpleResource' 'SimpleResource.psm1'
-    $script:multiPsm1 = Join-Path $fixturesPath 'MultiResource' 'MultiResource.psm1'
+    $script:simplePsm1 = Join-Path (Join-Path $fixturesPath 'SimpleResource') 'SimpleResource.psm1'
+    $script:multiPsm1 = Join-Path (Join-Path $fixturesPath 'MultiResource') 'MultiResource.psm1'
     $script:noDscPsm1 = Join-Path $fixturesPath 'NoDscResource.psm1'
 
     InModuleScope $script:dscModuleName {
@@ -33,7 +33,7 @@ Describe 'Add-AstProperty' {
         It 'Collects all [DscProperty()] decorated properties from SimpleResource' {
             InModuleScope 'DscResource.Authoring' {
                 $fixturesPath = Join-Path (Join-Path $PSScriptRoot '..') 'Fixtures'
-                $path = Join-Path $fixturesPath 'SimpleResource' 'SimpleResource.psm1'
+                $path = Join-Path (Join-Path $fixturesPath 'SimpleResource') 'SimpleResource.psm1'
                 [System.Management.Automation.Language.Token[]] $tokens = $null
                 [System.Management.Automation.Language.ParseError[]] $errors = $null
                 $ast = [System.Management.Automation.Language.Parser]::ParseFile($path, [ref]$tokens, [ref]$errors)
@@ -50,7 +50,7 @@ Describe 'Add-AstProperty' {
         It 'Marks the Key property correctly' {
             InModuleScope 'DscResource.Authoring' {
                 $fixturesPath = Join-Path (Join-Path $PSScriptRoot '..') 'Fixtures'
-                $path = Join-Path $fixturesPath 'SimpleResource' 'SimpleResource.psm1'
+                $path = Join-Path (Join-Path $fixturesPath 'SimpleResource') 'SimpleResource.psm1'
                 [System.Management.Automation.Language.Token[]] $tokens = $null
                 [System.Management.Automation.Language.ParseError[]] $errors = $null
                 $ast = [System.Management.Automation.Language.Parser]::ParseFile($path, [ref]$tokens, [ref]$errors)
@@ -69,7 +69,7 @@ Describe 'Add-AstProperty' {
         It 'Marks the Mandatory property correctly' {
             InModuleScope 'DscResource.Authoring' {
                 $fixturesPath = Join-Path (Join-Path $PSScriptRoot '..') 'Fixtures'
-                $path = Join-Path $fixturesPath 'SimpleResource' 'SimpleResource.psm1'
+                $path = Join-Path (Join-Path $fixturesPath 'SimpleResource') 'SimpleResource.psm1'
                 [System.Management.Automation.Language.Token[]] $tokens = $null
                 [System.Management.Automation.Language.ParseError[]] $errors = $null
                 $ast = [System.Management.Automation.Language.Parser]::ParseFile($path, [ref]$tokens, [ref]$errors)
@@ -88,7 +88,7 @@ Describe 'Add-AstProperty' {
         It 'Resolves enum values for enum-typed properties' {
             InModuleScope 'DscResource.Authoring' {
                 $fixturesPath = Join-Path (Join-Path $PSScriptRoot '..') 'Fixtures'
-                $path = Join-Path $fixturesPath 'MultiResource' 'MultiResource.psm1'
+                $path = Join-Path (Join-Path $fixturesPath 'MultiResource') 'MultiResource.psm1'
                 [System.Management.Automation.Language.Token[]] $tokens = $null
                 [System.Management.Automation.Language.ParseError[]] $errors = $null
                 $ast = [System.Management.Automation.Language.Parser]::ParseFile($path, [ref]$tokens, [ref]$errors)
@@ -107,7 +107,7 @@ Describe 'Add-AstProperty' {
         It 'Collects inherited base class properties' {
             InModuleScope 'DscResource.Authoring' {
                 $fixturesPath = Join-Path (Join-Path $PSScriptRoot '..') 'Fixtures'
-                $path = Join-Path $fixturesPath 'MultiResource' 'MultiResource.psm1'
+                $path = Join-Path (Join-Path $fixturesPath 'MultiResource') 'MultiResource.psm1'
                 [System.Management.Automation.Language.Token[]] $tokens = $null
                 [System.Management.Automation.Language.ParseError[]] $errors = $null
                 $ast = [System.Management.Automation.Language.Parser]::ParseFile($path, [ref]$tokens, [ref]$errors)

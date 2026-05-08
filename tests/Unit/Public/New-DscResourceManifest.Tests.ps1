@@ -12,7 +12,7 @@ Describe 'New-DscResourceManifest' {
     Context 'With adapted resources from pipeline' {
 
         BeforeAll {
-            $psd1 = Join-Path $fixturesPath 'SimpleResource' 'SimpleResource.psd1'
+            $psd1 = Join-Path (Join-Path $fixturesPath 'SimpleResource') 'SimpleResource.psd1'
             $adapted = New-DscAdaptedResourceManifest -Path $psd1
             $result = $adapted | New-DscResourceManifest
         }
@@ -42,8 +42,8 @@ Describe 'New-DscResourceManifest' {
 
         BeforeAll {
             $paths = @(
-                (Join-Path $fixturesPath 'SimpleResource' 'SimpleResource.psd1')
-                (Join-Path $fixturesPath 'MultiResource' 'MultiResource.psd1')
+                (Join-Path (Join-Path $fixturesPath 'SimpleResource') 'SimpleResource.psd1')
+                (Join-Path (Join-Path $fixturesPath 'MultiResource') 'MultiResource.psd1')
             )
             $adapted = $paths | New-DscAdaptedResourceManifest
             $result = $adapted | New-DscResourceManifest
@@ -64,7 +64,7 @@ Describe 'New-DscResourceManifest' {
     Context 'With AdaptedResource parameter' {
 
         BeforeAll {
-            $psd1 = Join-Path $fixturesPath 'SimpleResource' 'SimpleResource.psd1'
+            $psd1 = Join-Path (Join-Path $fixturesPath 'SimpleResource') 'SimpleResource.psd1'
             $adapted = New-DscAdaptedResourceManifest -Path $psd1
             $result = New-DscResourceManifest -AdaptedResource $adapted
         }
@@ -137,7 +137,7 @@ Describe 'New-DscResourceManifest' {
     Context 'Combining adapted and command-based resources' {
 
         BeforeAll {
-            $psd1 = Join-Path $fixturesPath 'SimpleResource' 'SimpleResource.psd1'
+            $psd1 = Join-Path (Join-Path $fixturesPath 'SimpleResource') 'SimpleResource.psd1'
             $adapted = New-DscAdaptedResourceManifest -Path $psd1
 
             $resource = @{
@@ -200,7 +200,7 @@ Describe 'New-DscResourceManifest' {
     Context 'ToJson serialization' {
 
         BeforeAll {
-            $psd1 = Join-Path $fixturesPath 'SimpleResource' 'SimpleResource.psd1'
+            $psd1 = Join-Path (Join-Path $fixturesPath 'SimpleResource') 'SimpleResource.psd1'
             $adapted = New-DscAdaptedResourceManifest -Path $psd1
 
             $resource = @{
@@ -244,7 +244,7 @@ Describe 'New-DscResourceManifest' {
     Context 'ToJson with only adapted resources' {
 
         BeforeAll {
-            $psd1 = Join-Path $fixturesPath 'SimpleResource' 'SimpleResource.psd1'
+            $psd1 = Join-Path (Join-Path $fixturesPath 'SimpleResource') 'SimpleResource.psd1'
             $adapted = New-DscAdaptedResourceManifest -Path $psd1
             $manifestList = $adapted | New-DscResourceManifest
             $json = $manifestList.ToJson()
@@ -303,7 +303,7 @@ Describe 'New-DscResourceManifest' {
     Context 'End-to-end pipeline from module to manifests file' {
 
         It 'Produces valid JSON matching the ManifestList schema structure' {
-            $psd1 = Join-Path $fixturesPath 'MultiResource' 'MultiResource.psd1'
+            $psd1 = Join-Path (Join-Path $fixturesPath 'MultiResource') 'MultiResource.psd1'
             $json = New-DscAdaptedResourceManifest -Path $psd1 |
                 New-DscResourceManifest |
                 ForEach-Object { $_.ToJson() }

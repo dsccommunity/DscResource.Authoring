@@ -15,7 +15,7 @@ Describe 'Get-DscResourceTypeDefinition' {
         BeforeAll {
             InModuleScope 'DscResource.Authoring' {
                 $fixturesPath = Join-Path (Join-Path $PSScriptRoot '..') 'Fixtures'
-                $path = Join-Path $fixturesPath 'SimpleResource' 'SimpleResource.psm1'
+                $path = Join-Path (Join-Path $fixturesPath 'SimpleResource') 'SimpleResource.psm1'
                 $script:result = @(Get-DscResourceTypeDefinition -Path $path)
             }
         }
@@ -51,7 +51,7 @@ Describe 'Get-DscResourceTypeDefinition' {
         It 'Returns one entry per [DscResource()] class' {
             InModuleScope 'DscResource.Authoring' {
                 $fixturesPath = Join-Path (Join-Path $PSScriptRoot '..') 'Fixtures'
-                $path = Join-Path $fixturesPath 'MultiResource' 'MultiResource.psm1'
+                $path = Join-Path (Join-Path $fixturesPath 'MultiResource') 'MultiResource.psm1'
                 $result = @(Get-DscResourceTypeDefinition -Path $path)
                 $result.Count | Should -BeGreaterOrEqual 2
             }

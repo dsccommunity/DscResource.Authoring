@@ -15,7 +15,7 @@ Describe 'Resolve-ModuleInfo' {
         BeforeAll {
             InModuleScope 'DscResource.Authoring' {
                 $fixturesPath = Join-Path (Join-Path $PSScriptRoot '..') 'Fixtures'
-                $psd1 = Join-Path $fixturesPath 'SimpleResource' 'SimpleResource.psd1'
+                $psd1 = Join-Path (Join-Path $fixturesPath 'SimpleResource') 'SimpleResource.psd1'
                 $script:result = Resolve-ModuleInfo -Path $psd1
             }
         }
@@ -63,7 +63,7 @@ Describe 'Resolve-ModuleInfo' {
         It 'Reads the sibling manifest and returns correct ModuleName' {
             InModuleScope 'DscResource.Authoring' {
                 $fixturesPath = Join-Path (Join-Path $PSScriptRoot '..') 'Fixtures'
-                $psm1 = Join-Path $fixturesPath 'SimpleResource' 'SimpleResource.psm1'
+                $psm1 = Join-Path (Join-Path $fixturesPath 'SimpleResource') 'SimpleResource.psm1'
                 $result = Resolve-ModuleInfo -Path $psm1
                 $result.ModuleName | Should -BeExactly 'SimpleResource'
             }

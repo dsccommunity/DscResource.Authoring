@@ -12,7 +12,7 @@ Describe 'GetClassCommentBasedHelp integration' {
     Context 'Single class with full comment-based help' {
 
         BeforeAll {
-            $psd1 = Join-Path $fixturesPath 'HelpResource' 'HelpResource.psd1'
+            $psd1 = Join-Path (Join-Path $fixturesPath 'HelpResource') 'HelpResource.psd1'
             $result = New-DscAdaptedResourceManifest -Path $psd1 -WarningVariable warnings -WarningAction SilentlyContinue
         }
 
@@ -51,7 +51,7 @@ Describe 'GetClassCommentBasedHelp integration' {
     Context 'Single class with partial comment-based help (missing some .PARAMETER entries)' {
 
         BeforeAll {
-            $psd1 = Join-Path $fixturesPath 'PartialHelpResource' 'PartialHelpResource.psd1'
+            $psd1 = Join-Path (Join-Path $fixturesPath 'PartialHelpResource') 'PartialHelpResource.psd1'
             $result = New-DscAdaptedResourceManifest -Path $psd1 -WarningVariable warnings -WarningAction SilentlyContinue
         }
 
@@ -87,7 +87,7 @@ Describe 'GetClassCommentBasedHelp integration' {
     Context 'File with no comment-based help on class' {
 
         BeforeAll {
-            $psd1 = Join-Path $fixturesPath 'SimpleResource' 'SimpleResource.psd1'
+            $psd1 = Join-Path (Join-Path $fixturesPath 'SimpleResource') 'SimpleResource.psd1'
             $result = New-DscAdaptedResourceManifest -Path $psd1 -WarningVariable warnings -WarningAction SilentlyContinue
         }
 
@@ -113,7 +113,7 @@ Describe 'GetClassCommentBasedHelp integration' {
     Context 'Two classes in one file - one with help, one without' {
 
         BeforeAll {
-            $psd1 = Join-Path $fixturesPath 'MixedHelpResource' 'MixedHelpResource.psd1'
+            $psd1 = Join-Path (Join-Path $fixturesPath 'MixedHelpResource') 'MixedHelpResource.psd1'
             $results = @(New-DscAdaptedResourceManifest -Path $psd1 -WarningVariable warnings -WarningAction SilentlyContinue)
         }
 
@@ -175,7 +175,7 @@ Describe 'GetClassCommentBasedHelp integration' {
     Context 'Two classes in one file - both with comment-based help' {
 
         BeforeAll {
-            $psd1 = Join-Path $fixturesPath 'BothHelpResource' 'BothHelpResource.psd1'
+            $psd1 = Join-Path (Join-Path $fixturesPath 'BothHelpResource') 'BothHelpResource.psd1'
             $results = @(New-DscAdaptedResourceManifest -Path $psd1 -WarningVariable warnings -WarningAction SilentlyContinue)
         }
 
@@ -239,7 +239,7 @@ Describe 'GetClassCommentBasedHelp integration' {
     Context 'Existing tests still pass - SimpleResource without help retains correct schema' {
 
         BeforeAll {
-            $psd1 = Join-Path $fixturesPath 'SimpleResource' 'SimpleResource.psd1'
+            $psd1 = Join-Path (Join-Path $fixturesPath 'SimpleResource') 'SimpleResource.psd1'
             $result = New-DscAdaptedResourceManifest -Path $psd1 -WarningAction SilentlyContinue
         }
 

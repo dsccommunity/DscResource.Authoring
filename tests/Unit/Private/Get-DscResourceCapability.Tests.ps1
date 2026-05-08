@@ -4,8 +4,8 @@ BeforeAll {
     Import-Module -Name $script:dscModuleName -Force
 
     $fixturesPath = Join-Path (Join-Path $PSScriptRoot '..') 'Fixtures'
-    $script:simplePsm1 = Join-Path $fixturesPath 'SimpleResource' 'SimpleResource.psm1'
-    $script:multiPsm1 = Join-Path $fixturesPath 'MultiResource' 'MultiResource.psm1'
+    $script:simplePsm1 = Join-Path (Join-Path $fixturesPath 'SimpleResource') 'SimpleResource.psm1'
+    $script:multiPsm1 = Join-Path (Join-Path $fixturesPath 'MultiResource') 'MultiResource.psm1'
 }
 
 AfterAll {
@@ -19,7 +19,7 @@ Describe 'Get-DscResourceCapability' {
         BeforeAll {
             InModuleScope 'DscResource.Authoring' {
                 $fixturesPath = Join-Path (Join-Path $PSScriptRoot '..') 'Fixtures'
-                $path = Join-Path $fixturesPath 'SimpleResource' 'SimpleResource.psm1'
+                $path = Join-Path (Join-Path $fixturesPath 'SimpleResource') 'SimpleResource.psm1'
                 [System.Management.Automation.Language.Token[]] $tokens = $null
                 [System.Management.Automation.Language.ParseError[]] $errors = $null
                 $ast = [System.Management.Automation.Language.Parser]::ParseFile($path, [ref]$tokens, [ref]$errors)
