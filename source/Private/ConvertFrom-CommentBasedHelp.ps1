@@ -53,7 +53,11 @@ function ConvertFrom-CommentBasedHelp
 
         $startIndex = $keywordMatches[$i].Index + $keywordMatches[$i].Length
         $endIndex = if ($i + 1 -lt $keywordMatches.Count) { $keywordMatches[$i + 1].Index } else { $text.Length }
-        $content = $text.Substring($startIndex, $endIndex - $startIndex).Trim()
+        $rawContent = $text.Substring($startIndex, $endIndex - $startIndex).Trim()
+
+        # Normalise multi-line content: trim each line and join with a single space
+        # so that descriptions do not contain literal \r\n or leading indentation.
+        $content = ($rawContent -split '\r?\n' | ForEach-Object { $_.Trim() } | Where-Object { $_ -ne '' }) -join ' '
 
         switch ($keyword)
         {

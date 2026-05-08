@@ -15,6 +15,14 @@
     .PARAMETER Path
         The path to a .ps1, .psm1, or .psd1 file containing class-based DSC resources.
         When a .psd1 is provided, the RootModule is resolved and parsed automatically.
+        If no .psd1 is available (e.g. a standalone .ps1 or .psm1 without a sibling manifest),
+        the version defaults to '0.0.1'. Use the Version parameter to supply the correct version
+        in that case.
+
+    .PARAMETER Version
+        Overrides the version resolved from the module manifest. Must be a valid semantic version
+        string (e.g. '1.2.3' or '1.2.3-preview'). When omitted, the version from the .psd1
+        ModuleVersion field is used, or '0.0.1' for files without a co-located manifest.
 
     .EXAMPLE
         New-DscAdaptedResourceManifest -Path ./MyModule/MyModule.psd1
@@ -46,6 +54,7 @@ function New-DscAdaptedResourceManifest
     param
     (
         [Parameter(Mandatory = $true, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)]
+        [Alias('FullName')]
         [ValidateScript({
                 if (-not (Test-Path -LiteralPath $_))
                 {
@@ -59,7 +68,19 @@ function New-DscAdaptedResourceManifest
                 return $true
             })]
         [string]
-        $Path
+        $Path,
+        
+        # Semantic version string for PS7: SemanticVersion Class
+        [Parameter()]
+        [ValidateScript({
+                if ($_ -notmatch '^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(-[0-9A-Za-z-]+(\.[0-9A-Za-z-]+)*)?(\+[0-9A-Za-z-]+(\.[0-9A-Za-z-]+)*)?$')
+                {
+                    throw "Version '$_' is not a valid semantic version (e.g. '1.2.3' or '1.2.3-preview')."
+                }
+                return $true
+            })]
+        [string]
+        $Version
     )
 
     process
@@ -135,7 +156,7 @@ function New-DscAdaptedResourceManifest
             $manifest.Schema = $script:AdaptedResourceSchemaUri
             $manifest.Type = $resourceType
             $manifest.Kind = 'resource'
-            $manifest.Version = $moduleInfo.Version
+            $manifest.Version = if ($PSBoundParameters.ContainsKey('Version')) { $Version } else { $moduleInfo.Version }
             $manifest.Capabilities = @($capabilities)
             $manifest.Description = $resourceDescription
             $manifest.Author = $moduleInfo.Author

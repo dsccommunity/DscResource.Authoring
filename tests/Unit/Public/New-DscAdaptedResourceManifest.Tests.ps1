@@ -338,4 +338,41 @@ Describe 'New-DscAdaptedResourceManifest' {
             $result.ManifestSchema.Embedded['additionalProperties'] | Should -BeFalse
         }
     }
+
+    Context 'Version parameter' {
+
+        It 'Overrides version from psd1 when -Version is specified' {
+            $psd1 = Join-Path (Join-Path $fixturesPath 'SimpleResource') 'SimpleResource.psd1'
+            $result = New-DscAdaptedResourceManifest -Path $psd1 -Version '3.0.0'
+            $result.Version | Should -BeExactly '3.0.0'
+        }
+
+        It 'Overrides version for standalone ps1 when -Version is specified' {
+            $ps1Path = Join-Path $fixturesPath 'StandaloneResource.ps1'
+            $result = New-DscAdaptedResourceManifest -Path $ps1Path -Version '2.1.0'
+            $result.Version | Should -BeExactly '2.1.0'
+        }
+
+        It 'Accepts a pre-release semantic version' {
+            $psd1 = Join-Path (Join-Path $fixturesPath 'SimpleResource') 'SimpleResource.psd1'
+            $result = New-DscAdaptedResourceManifest -Path $psd1 -Version '1.0.0-preview.1'
+            $result.Version | Should -BeExactly '1.0.0-preview.1'
+        }
+
+        It 'Falls back to module version when -Version is not specified' {
+            $psd1 = Join-Path (Join-Path $fixturesPath 'SimpleResource') 'SimpleResource.psd1'
+            $result = New-DscAdaptedResourceManifest -Path $psd1
+            $result.Version | Should -BeExactly '1.0.0'
+        }
+
+        It 'Throws when -Version is not a valid semantic version' {
+            $psd1 = Join-Path (Join-Path $fixturesPath 'SimpleResource') 'SimpleResource.psd1'
+            { New-DscAdaptedResourceManifest -Path $psd1 -Version 'not-a-version' } | Should -Throw '*not a valid semantic version*'
+        }
+
+        It 'Throws when -Version uses a date-style version' {
+            $psd1 = Join-Path (Join-Path $fixturesPath 'SimpleResource') 'SimpleResource.psd1'
+            { New-DscAdaptedResourceManifest -Path $psd1 -Version '2026.05.08' } | Should -Throw '*not a valid semantic version*'
+        }
+    }
 }

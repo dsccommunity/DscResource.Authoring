@@ -45,7 +45,7 @@ function Resolve-ModuleInfo
         $moduleName = [System.IO.Path]::GetFileNameWithoutExtension($resolvedPath)
         $version = if ($manifestData.ModuleVersion) { $manifestData.ModuleVersion } else { '0.0.1' }
         $author = if ($manifestData.Author) { $manifestData.Author } else { '' }
-        $description = if ($manifestData.Description) { $manifestData.Description } else { '' }
+        $description = if ($manifestData.Description) { ($manifestData.Description -split '\r?\n' | ForEach-Object { $_.Trim() } | Where-Object { $_ -ne '' }) -join ' ' } else { '' }
 
         $rootModule = $manifestData.RootModule
         if ([string]::IsNullOrEmpty($rootModule))
