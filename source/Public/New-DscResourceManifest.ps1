@@ -69,7 +69,6 @@ function New-DscResourceManifest
     begin
     {
         $manifestList = [DscResourceManifestList]::new()
-
         if ($Resource)
         {
             foreach ($res in $Resource)
