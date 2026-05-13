@@ -20,6 +20,6 @@
     Sampler                     = 'latest'
     'Sampler.GitHubTasks'       = 'latest'
 
-
+    'DscResource.DocGenerator'  = 'latest'
 }
 
