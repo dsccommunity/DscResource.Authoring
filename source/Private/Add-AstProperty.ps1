@@ -66,6 +66,7 @@ function Add-AstProperty
         $isKey = $false
         $isMandatory = $false
         $isNotConfigurable = $false
+        $validateSetValues = $null
         foreach ($attr in $propertyAst.Attributes)
         {
             if ($attr.TypeName.Name -eq 'DscProperty')
@@ -80,6 +81,11 @@ function Add-AstProperty
                         'NotConfigurable' { $isNotConfigurable = $true }
                     }
                 }
+            }
+
+            if ($attr.TypeName.Name -eq 'ValidateSet')
+            {
+                $validateSetValues = @($attr.PositionalArguments | ForEach-Object { $_.Value })
             }
         }
 
@@ -105,6 +111,10 @@ function Add-AstProperty
         if ($enumAst)
         {
             $enumValues = @($enumAst.Members | ForEach-Object { $_.Name })
+        }
+        elseif ($validateSetValues)
+        {
+            $enumValues = $validateSetValues
         }
 
         $Properties.Add(@{

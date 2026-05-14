@@ -122,4 +122,63 @@ Describe 'Add-AstProperty' {
             }
         }
     }
+
+    Context 'Class with [ValidateSet()] attributes' {
+
+        It 'Resolves ValidateSet values as EnumValues for string properties' {
+            InModuleScope 'DscResource.Authoring' {
+                $fixturesPath = Join-Path (Join-Path $PSScriptRoot '..') 'Fixtures'
+                $path = Join-Path (Join-Path $fixturesPath 'ValidateSetResource') 'ValidateSetResource.psm1'
+                [System.Management.Automation.Language.Token[]] $tokens = $null
+                [System.Management.Automation.Language.ParseError[]] $errors = $null
+                $ast = [System.Management.Automation.Language.Parser]::ParseFile($path, [ref]$tokens, [ref]$errors)
+                $allTypes = $ast.FindAll({ $args[0] -is [System.Management.Automation.Language.TypeDefinitionAst] }, $false)
+                $typeAst = $allTypes | Where-Object { $_.Name -eq 'ValidateSetResource' }
+
+                $properties = [System.Collections.Generic.List[hashtable]]::new()
+                Add-AstProperty -AllTypeDefinitions $allTypes -TypeAst $typeAst -Properties $properties
+
+                $ensureProp = $properties | Where-Object { $_.Name -eq 'Ensure' }
+                $ensureProp.EnumValues | Should -Contain 'Present'
+                $ensureProp.EnumValues | Should -Contain 'Absent'
+                $ensureProp.EnumValues.Count | Should -Be 2
+            }
+        }
+
+        It 'Resolves multiple ValidateSet properties independently' {
+            InModuleScope 'DscResource.Authoring' {
+                $fixturesPath = Join-Path (Join-Path $PSScriptRoot '..') 'Fixtures'
+                $path = Join-Path (Join-Path $fixturesPath 'ValidateSetResource') 'ValidateSetResource.psm1'
+                [System.Management.Automation.Language.Token[]] $tokens = $null
+                [System.Management.Automation.Language.ParseError[]] $errors = $null
+                $ast = [System.Management.Automation.Language.Parser]::ParseFile($path, [ref]$tokens, [ref]$errors)
+                $allTypes = $ast.FindAll({ $args[0] -is [System.Management.Automation.Language.TypeDefinitionAst] }, $false)
+                $typeAst = $allTypes | Where-Object { $_.Name -eq 'ValidateSetResource' }
+
+                $properties = [System.Collections.Generic.List[hashtable]]::new()
+                Add-AstProperty -AllTypeDefinitions $allTypes -TypeAst $typeAst -Properties $properties
+
+                $priorityProp = $properties | Where-Object { $_.Name -eq 'Priority' }
+                $priorityProp.EnumValues | Should -Be @('Low', 'Medium', 'High')
+            }
+        }
+
+        It 'Leaves EnumValues null for properties without ValidateSet or enum type' {
+            InModuleScope 'DscResource.Authoring' {
+                $fixturesPath = Join-Path (Join-Path $PSScriptRoot '..') 'Fixtures'
+                $path = Join-Path (Join-Path $fixturesPath 'ValidateSetResource') 'ValidateSetResource.psm1'
+                [System.Management.Automation.Language.Token[]] $tokens = $null
+                [System.Management.Automation.Language.ParseError[]] $errors = $null
+                $ast = [System.Management.Automation.Language.Parser]::ParseFile($path, [ref]$tokens, [ref]$errors)
+                $allTypes = $ast.FindAll({ $args[0] -is [System.Management.Automation.Language.TypeDefinitionAst] }, $false)
+                $typeAst = $allTypes | Where-Object { $_.Name -eq 'ValidateSetResource' }
+
+                $properties = [System.Collections.Generic.List[hashtable]]::new()
+                Add-AstProperty -AllTypeDefinitions $allTypes -TypeAst $typeAst -Properties $properties
+
+                $nameProp = $properties | Where-Object { $_.Name -eq 'Name' }
+                $nameProp.EnumValues | Should -BeNullOrEmpty
+            }
+        }
+    }
 }
