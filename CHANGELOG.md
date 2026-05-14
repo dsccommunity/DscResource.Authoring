@@ -5,6 +5,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Added support for `[ValidatePattern()]` attributes on DSC properties, emitting the regex as a `pattern` keyword in the generated JSON schema.
+- Added `-AllowNonEcmaPattern` switch to `New-DscAdaptedResourceManifest` to force-emit patterns containing .NET-specific regex constructs that are not ECMA 262 compatible.
+
 ### Fixed
 
 - Fixed build task import so module aliases are correctly exported when the module is loaded.

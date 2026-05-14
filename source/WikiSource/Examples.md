@@ -6,6 +6,8 @@
 1. <a href="#override-description">Override schema descriptions</a>
 1. <a href="#json-schema">Add JSON schema constraints</a>
 1. <a href="#readonly">Generate read-only properties</a>
+1. <a href="#validateset">Restrict property values with ValidateSet</a>
+1. <a href="#validatepattern">Validate property format with ValidatePattern</a>
 1. <a href="#publish">Publish manifests with a module</a>
 
 <a name="overview" />
@@ -111,6 +113,112 @@ schema:
     "description": "The current status returned by the resource."
   }
 }
+```
+
+<a name="validateset" />
+
+## Restrict property values with ValidateSet
+
+Decorate a `[string]` property with `[ValidateSet()]` to restrict the values
+a caller may supply. `DscResource.Authoring` reads the allowed values from the
+AST and emits them as a JSON Schema `enum` array, so DSC and schema-aware
+editors enforce the constraint before the resource runs.
+
+```powershell
+[DscResource()]
+class MyResource
+{
+    [DscProperty(Key)]
+    [string] $Name
+
+    [DscProperty()]
+    [ValidateSet('Present', 'Absent')]
+    [string] $Ensure
+
+    [DscProperty()]
+    [ValidateSet('Low', 'Medium', 'High')]
+    [string] $Priority
+
+    # ...
+}
+```
+
+The generated schema fragment for those two properties:
+
+```json
+{
+  "Ensure": {
+    "type": "string",
+    "enum": ["Present", "Absent"],
+    "title": "Ensure"
+  },
+  "Priority": {
+    "type": "string",
+    "enum": ["Low", "Medium", "High"],
+    "title": "Priority"
+  }
+}
+```
+
+A PowerShell `enum` type defined in the same file is handled identically —
+you do not need `[ValidateSet()]` when an `enum` type is already used.
+
+<a name="validatepattern" />
+
+## Validate property format with ValidatePattern
+
+Decorate a `[string]` property with `[ValidatePattern()]` to constrain its
+format. `DscResource.Authoring` emits the regex as a JSON Schema `pattern`
+keyword so DSC and schema-aware tools can validate the value before invoking
+the resource.
+
+```powershell
+[DscResource()]
+class MyResource
+{
+    [DscProperty(Key)]
+    [string] $Name
+
+    [DscProperty()]
+    [ValidatePattern('^[0-9a-fA-F]{8}-(?:[0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$')]
+    [string] $CorrelationId
+
+    # ...
+}
+```
+
+The generated schema fragment:
+
+```json
+{
+  "CorrelationId": {
+    "type": "string",
+    "pattern": "^[0-9a-fA-F]{8}-(?:[0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$",
+    "title": "CorrelationId"
+  }
+}
+```
+
+When a property has both `[ValidateSet()]` and `[ValidatePattern()]`, the
+`enum` keyword takes precedence and `pattern` is not emitted.
+
+### .NET-specific regex constructs
+
+JSON Schema validators use the ECMA 262 regex dialect. If a pattern contains
+.NET-only constructs such as `\A`/`\Z` anchors, atomic groups `(?>...)`,
+inline comments `(?#...)`, or inline option flags `(?i)`, `DscResource.Authoring`
+skips the `pattern` keyword and writes a warning:
+
+```
+WARNING: Property 'Value': ValidatePattern value contains .NET-specific regex
+constructs that are not ECMA 262 compatible and will not be emitted.
+Use -AllowNonEcmaPattern to override.
+```
+
+To emit the pattern anyway, pass `-AllowNonEcmaPattern`:
+
+```powershell
+New-DscAdaptedResourceManifest -Path ./MyModule/MyModule.psd1 -AllowNonEcmaPattern
 ```
 
 <a name="publish" />

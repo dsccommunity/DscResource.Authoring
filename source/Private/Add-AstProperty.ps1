@@ -67,6 +67,7 @@ function Add-AstProperty
         $isMandatory = $false
         $isNotConfigurable = $false
         $validateSetValues = $null
+        $validatePatternValue = $null
         foreach ($attr in $propertyAst.Attributes)
         {
             if ($attr.TypeName.Name -eq 'DscProperty')
@@ -86,6 +87,11 @@ function Add-AstProperty
             if ($attr.TypeName.Name -eq 'ValidateSet')
             {
                 $validateSetValues = @($attr.PositionalArguments | ForEach-Object { $_.Value })
+            }
+
+            if ($attr.TypeName.Name -eq 'ValidatePattern')
+            {
+                $validatePatternValue = $attr.PositionalArguments[0].Value
             }
         }
 
@@ -124,6 +130,7 @@ function Add-AstProperty
                 IsMandatory       = $isMandatory -or $isKey
                 IsNotConfigurable = $isNotConfigurable
                 EnumValues        = $enumValues
+                PatternValue      = $validatePatternValue
             })
     }
 }

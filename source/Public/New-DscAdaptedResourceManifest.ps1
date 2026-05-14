@@ -46,6 +46,12 @@
         Returns a DscAdaptedResourceManifest object for each class-based DSC resource found.
         The object has a .ToJson() method for serialization to the adapted resource manifest
         JSON format.
+
+    .PARAMETER AllowNonEcmaPattern
+        When specified, `[ValidatePattern()]` regex values that contain .NET-specific constructs
+        incompatible with ECMA 262 (e.g. `\A`, `\Z`, atomic groups, inline flags) are still
+        written into the JSON Schema `pattern` keyword. By default such patterns are skipped
+        and a warning is written instead.
 #>
 function New-DscAdaptedResourceManifest
 {
@@ -80,7 +86,11 @@ function New-DscAdaptedResourceManifest
                 return $true
             })]
         [string]
-        $Version
+        $Version,
+
+        [Parameter()]
+        [System.Management.Automation.SwitchParameter]
+        $AllowNonEcmaPattern
     )
 
     process
@@ -150,7 +160,15 @@ function New-DscAdaptedResourceManifest
                 Write-Warning "No comment-based help found above class '$resourceName'. Using default descriptions."
             }
 
-            $embeddedSchema = New-EmbeddedJsonSchema -ResourceName $resourceType -Properties $properties -Description $resourceDescription -ClassHelp $classHelp
+            $newEmbeddedJsonSchemaParameters = @{
+                ResourceName        = $resourceType
+                Properties          = $properties
+                Description         = $resourceDescription
+                ClassHelp           = $classHelp
+                AllowNonEcmaPattern = $AllowNonEcmaPattern
+            }
+
+            $embeddedSchema = New-EmbeddedJsonSchema @newEmbeddedJsonSchemaParameters
 
             $manifest = [DscAdaptedResourceManifest]::new()
             $manifest.Schema = $script:AdaptedResourceSchemaUri

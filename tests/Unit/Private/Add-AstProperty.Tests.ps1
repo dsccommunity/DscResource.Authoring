@@ -181,4 +181,63 @@ Describe 'Add-AstProperty' {
             }
         }
     }
+
+    Context 'Class with [ValidatePattern()] attributes' {
+
+        BeforeAll {
+            $script:validatePatternPsm1 = Join-Path (Join-Path (Join-Path $PSScriptRoot '..') 'Fixtures') (Join-Path 'ValidatePatternResource' 'ValidatePatternResource.psm1')
+        }
+
+        It 'Captures the pattern string as PatternValue' {
+            InModuleScope 'DscResource.Authoring' {
+                $path = Join-Path (Join-Path (Join-Path $PSScriptRoot '..') 'Fixtures') (Join-Path 'ValidatePatternResource' 'ValidatePatternResource.psm1')
+                [System.Management.Automation.Language.Token[]] $tokens = $null
+                [System.Management.Automation.Language.ParseError[]] $errors = $null
+                $ast = [System.Management.Automation.Language.Parser]::ParseFile($path, [ref]$tokens, [ref]$errors)
+                $allTypes = $ast.FindAll({ $args[0] -is [System.Management.Automation.Language.TypeDefinitionAst] }, $false)
+                $typeAst = $allTypes | Where-Object { $_.Name -eq 'ValidatePatternResource' }
+
+                $properties = [System.Collections.Generic.List[hashtable]]::new()
+                Add-AstProperty -AllTypeDefinitions $allTypes -TypeAst $typeAst -Properties $properties
+
+                $guidProp = $properties | Where-Object { $_.Name -eq 'AuditGuid' }
+                $guidProp.PatternValue | Should -Be '^[0-9a-fA-F]{8}-(?:[0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$'
+            }
+        }
+
+        It 'Leaves PatternValue null for properties without ValidatePattern' {
+            InModuleScope 'DscResource.Authoring' {
+                $path = Join-Path (Join-Path (Join-Path $PSScriptRoot '..') 'Fixtures') (Join-Path 'ValidatePatternResource' 'ValidatePatternResource.psm1')
+                [System.Management.Automation.Language.Token[]] $tokens = $null
+                [System.Management.Automation.Language.ParseError[]] $errors = $null
+                $ast = [System.Management.Automation.Language.Parser]::ParseFile($path, [ref]$tokens, [ref]$errors)
+                $allTypes = $ast.FindAll({ $args[0] -is [System.Management.Automation.Language.TypeDefinitionAst] }, $false)
+                $typeAst = $allTypes | Where-Object { $_.Name -eq 'ValidatePatternResource' }
+
+                $properties = [System.Collections.Generic.List[hashtable]]::new()
+                Add-AstProperty -AllTypeDefinitions $allTypes -TypeAst $typeAst -Properties $properties
+
+                $nameProp = $properties | Where-Object { $_.Name -eq 'Name' }
+                $nameProp.PatternValue | Should -BeNullOrEmpty
+            }
+        }
+
+        It 'Suppresses PatternValue when ValidateSet is also present (enum takes precedence)' {
+            InModuleScope 'DscResource.Authoring' {
+                $path = Join-Path (Join-Path (Join-Path $PSScriptRoot '..') 'Fixtures') (Join-Path 'ValidatePatternResource' 'ValidatePatternResource.psm1')
+                [System.Management.Automation.Language.Token[]] $tokens = $null
+                [System.Management.Automation.Language.ParseError[]] $errors = $null
+                $ast = [System.Management.Automation.Language.Parser]::ParseFile($path, [ref]$tokens, [ref]$errors)
+                $allTypes = $ast.FindAll({ $args[0] -is [System.Management.Automation.Language.TypeDefinitionAst] }, $false)
+                $typeAst = $allTypes | Where-Object { $_.Name -eq 'ValidatePatternResource' }
+
+                $properties = [System.Collections.Generic.List[hashtable]]::new()
+                Add-AstProperty -AllTypeDefinitions $allTypes -TypeAst $typeAst -Properties $properties
+
+                # Ensure has both ValidateSet and ValidatePattern; enum wins so pattern should not surface in schema
+                $ensureProp = $properties | Where-Object { $_.Name -eq 'Ensure' }
+                $ensureProp.EnumValues | Should -Not -BeNullOrEmpty
+            }
+        }
+    }
 }

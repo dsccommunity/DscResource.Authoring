@@ -22,6 +22,13 @@
         Optional hashtable produced by Get-ClassCommentBasedHelp containing
         per-parameter descriptions to use for property descriptions.
 
+    .PARAMETER AllowNonEcmaPattern
+        When specified, `[ValidatePattern()]` values containing .NET-specific
+        regex constructs (such as `\A`, `\Z`, atomic groups, or inline flags)
+        are still emitted as the JSON Schema `pattern` keyword even though they
+        may not be understood by ECMA 262 validators. By default such patterns
+        are silently skipped and a warning is written.
+
     .EXAMPLE
         $schema = New-EmbeddedJsonSchema -ResourceName 'MyModule/MyResource' -Properties $properties
 
@@ -55,7 +62,11 @@ function New-EmbeddedJsonSchema
 
         [Parameter()]
         [hashtable]
-        $ClassHelp
+        $ClassHelp,
+
+        [Parameter()]
+        [System.Management.Automation.SwitchParameter]
+        $AllowNonEcmaPattern
     )
 
     $schemaProperties = [ordered]@{}
@@ -80,6 +91,18 @@ function New-EmbeddedJsonSchema
         }
 
         $schemaProp['title'] = $prop.Name
+
+        if (-not $prop.EnumValues -and $prop.PatternValue)
+        {
+            if ($AllowNonEcmaPattern -or (Test-IsEcmaCompatiblePattern -Pattern $prop.PatternValue))
+            {
+                $schemaProp['pattern'] = $prop.PatternValue
+            }
+            else
+            {
+                Write-Warning "Property '$($prop.Name)': ValidatePattern value contains .NET-specific regex constructs that are not ECMA 262 compatible and will not be emitted. Use -AllowNonEcmaPattern to override."
+            }
+        }
 
         if ($prop.IsNotConfigurable)
         {

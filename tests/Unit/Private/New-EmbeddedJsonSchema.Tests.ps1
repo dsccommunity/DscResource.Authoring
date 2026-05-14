@@ -229,4 +229,73 @@ Describe 'New-EmbeddedJsonSchema' {
             }
         }
     }
+
+    Context 'ValidatePattern handling' {
+
+        It 'Emits pattern keyword for an ECMA-compatible pattern' {
+            InModuleScope 'DscResource.Authoring' {
+                $properties = [System.Collections.Generic.List[hashtable]]::new()
+                $properties.Add(@{
+                    Name              = 'AuditGuid'
+                    TypeName          = 'String'
+                    IsMandatory       = $false
+                    IsNotConfigurable = $false
+                    EnumValues        = $null
+                    PatternValue      = '^[0-9a-fA-F]{8}-(?:[0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$'
+                })
+                $result = New-EmbeddedJsonSchema -ResourceName 'TestModule/TestResource' -Properties $properties
+                $result['properties']['AuditGuid']['pattern'] | Should -Be '^[0-9a-fA-F]{8}-(?:[0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$'
+            }
+        }
+
+        It 'Suppresses pattern and writes a warning for a .NET-specific pattern' {
+            InModuleScope 'DscResource.Authoring' {
+                $properties = [System.Collections.Generic.List[hashtable]]::new()
+                $properties.Add(@{
+                    Name              = 'Value'
+                    TypeName          = 'String'
+                    IsMandatory       = $false
+                    IsNotConfigurable = $false
+                    EnumValues        = $null
+                    PatternValue      = '\Afoo\Z'
+                })
+                $result = $null
+                { $result = New-EmbeddedJsonSchema -ResourceName 'TestModule/TestResource' -Properties $properties -WarningAction Stop } |
+                    Should -Throw
+            }
+        }
+
+        It 'Emits pattern for a .NET-specific pattern when -AllowNonEcmaPattern is set' {
+            InModuleScope 'DscResource.Authoring' {
+                $properties = [System.Collections.Generic.List[hashtable]]::new()
+                $properties.Add(@{
+                    Name              = 'Value'
+                    TypeName          = 'String'
+                    IsMandatory       = $false
+                    IsNotConfigurable = $false
+                    EnumValues        = $null
+                    PatternValue      = '\Afoo\Z'
+                })
+                $result = New-EmbeddedJsonSchema -ResourceName 'TestModule/TestResource' -Properties $properties -AllowNonEcmaPattern
+                $result['properties']['Value']['pattern'] | Should -Be '\Afoo\Z'
+            }
+        }
+
+        It 'Does not emit pattern when EnumValues is also set' {
+            InModuleScope 'DscResource.Authoring' {
+                $properties = [System.Collections.Generic.List[hashtable]]::new()
+                $properties.Add(@{
+                    Name              = 'Ensure'
+                    TypeName          = 'String'
+                    IsMandatory       = $false
+                    IsNotConfigurable = $false
+                    EnumValues        = @('Present', 'Absent')
+                    PatternValue      = '^(Present|Absent)$'
+                })
+                $result = New-EmbeddedJsonSchema -ResourceName 'TestModule/TestResource' -Properties $properties
+                $result['properties']['Ensure'].ContainsKey('pattern') | Should -BeFalse
+                $result['properties']['Ensure']['enum'] | Should -Be @('Present', 'Absent')
+            }
+        }
+    }
 }
