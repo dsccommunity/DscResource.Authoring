@@ -1,4 +1,4 @@
-<#
+﻿<#
     .SYNOPSIS
         Tests whether a regex pattern is compatible with the ECMA 262 dialect
         used by JSON Schema validators.

@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Fixed build task import so module aliases are correctly exported when the module is loaded.
 - Fixed `[ValidateSet()]` attributes on `[string]` DSC properties now being correctly emitted as `enum` in the generated JSON schema.
+- Fixed `UTF8BOM` issue on new script.
 
 ## [0.2.0] - 2026-05-14
 

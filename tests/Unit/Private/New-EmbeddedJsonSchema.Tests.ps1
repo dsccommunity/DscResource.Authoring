@@ -293,7 +293,7 @@ Describe 'New-EmbeddedJsonSchema' {
                     PatternValue      = '^(Present|Absent)$'
                 })
                 $result = New-EmbeddedJsonSchema -ResourceName 'TestModule/TestResource' -Properties $properties
-                $result['properties']['Ensure'].ContainsKey('pattern') | Should -BeFalse
+                $result['properties']['Ensure'].Contains('pattern') | Should -BeFalse
                 $result['properties']['Ensure']['enum'] | Should -Be @('Present', 'Absent')
             }
         }
