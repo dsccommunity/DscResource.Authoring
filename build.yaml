@@ -9,8 +9,8 @@ CopyPaths:
   - ../.build/tasks
 #  - DSCResources
   # - Modules
-prefix: prefix.ps1
 suffix: suffix.ps1
+prefix: prefix.ps1
 Encoding: UTF8
 # Can be used to manually specify module's semantic version if the preferred method of
 # using GitVersion is not available, and it is not possible to set the session environment
