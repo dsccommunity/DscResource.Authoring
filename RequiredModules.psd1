@@ -12,14 +12,14 @@
     #    }
     #}
 
-    InvokeBuild                 = 'latest'
-    PSScriptAnalyzer            = 'latest'
-    Pester                      = 'latest'
-    ModuleBuilder               = '3.1.8'
-    ChangelogManagement         = 'latest'
-    Sampler                     = 'latest'
-    'Sampler.GitHubTasks'       = 'latest'
+    InvokeBuild                = 'latest'
+    PSScriptAnalyzer           = 'latest'
+    Pester                     = 'latest'
+    ModuleBuilder              = 'latest'
+    ChangelogManagement        = 'latest'
+    Sampler                    = 'latest'
+    'Sampler.GitHubTasks'      = 'latest'
 
-    'DscResource.DocGenerator'  = 'latest'
+    'DscResource.DocGenerator' = 'latest'
 }
 

@@ -4,7 +4,7 @@
 ![Azure DevOps coverage (branch)](https://img.shields.io/azure-devops/coverage/dsccommunity/DscResource.Authoring/1/main)
 [![codecov](https://codecov.io/gh/dsccommunity/DscResource.Authoring/branch/main/graph/badge.svg)](https://codecov.io/gh/dsccommunity/DscResource.Authoring)
 [![Azure DevOps tests](https://img.shields.io/azure-devops/tests/dsccommunity/DscResource.Authoring/1/main)](https://dsccommunity.visualstudio.com/DscResource.Authoring/_test/analytics?definitionId=1&contextType=build)
-[![PowerShell Gallery (with prereleases)](https://img.shields.io/powershellgallery/vpre/DscResource.Authoring?label=DscResource.Authoring%20Preview)](https://www.powershellgallery.com/packages/DscResource.Authoring/)
+[![PowerShell Gallery (with prereleases)](https://img.shields.io/powershellgallery/v/DscResource.Authoring?label=DscResource.Authoring%20Preview&include_prereleases)](https://www.powershellgallery.com/packages/DscResource.Authoring/)
 [![PowerShell Gallery](https://img.shields.io/powershellgallery/v/DscResource.Authoring?label=DscResource.Authoring)](https://www.powershellgallery.com/packages/DscResource.Authoring/)
 
 This module contains functions for authoring DSC resources targeting DSC v3.

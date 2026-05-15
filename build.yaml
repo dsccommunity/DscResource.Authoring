@@ -3,25 +3,19 @@
 #          ModuleBuilder Configuration             #
 ####################################################
 
-BuiltModuleSubdirectory: module
+BuiltModuleSubdirectory: builtModule
 CopyPaths:
   - en-US
-  - ../.build/tasks
+  - tasks
 #  - DSCResources
   # - Modules
-suffix: suffix.ps1
 prefix: prefix.ps1
 Encoding: UTF8
-# Can be used to manually specify module's semantic version if the preferred method of
-# using GitVersion is not available, and it is not possible to set the session environment
-# variable `$env:ModuleVersion`, nor setting the variable `$ModuleVersion`, in the
-# PowerShell session (parent scope) before running the task `build`.
-#SemVer: '99.0.0-preview1'
-
-# Suffix to add to Root module PSM1 after merge (here, the Set-Alias exporting IB tasks)
-# suffix: suffix.ps1
-# prefix: prefix.ps1
 VersionedOutputDirectory: true
+
+AliasesToExport:
+  - 'Task.Create_DscAdaptedResourceManifests'
+  - 'Task.Create_DscResourceManifestsList'
 
 ####################################################
 #      ModuleBuilder Submodules Configuration      #
@@ -53,13 +47,10 @@ BuildWorkflow:
     - Build_NestedModules_ModuleBuilder
     - Create_changelog_release_output
 
-
   pack:
     - build
 
     - package_module_nupkg
-
-
 
   # Defining test task to be run when invoking `./build.ps1 -Tasks test`
   test:
@@ -77,7 +68,6 @@ BuildWorkflow:
     #- Merge_CodeCoverage_Files
 
   publish:
-
     - Publish_Release_To_GitHub # Runs first, if token is expired it will fail early
     - publish_module_to_gallery
     - Publish_GitHub_Wiki_Content
